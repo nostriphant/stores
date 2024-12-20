@@ -1,0 +1,48 @@
+{
+    "name": "nostriphant/stores",
+    "description": "Nostr storage back-ends: sql, memory and disk",
+    "type": "project",
+    "require": {
+        "php": "^8.3",
+        "ext-pcntl": "*",
+        "nostriphant/nip-01": "^1.0"
+    },
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "nostriphant\\Stores\\": "src/",
+            "nostriphant\\StoresTests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Rik Meijer",
+            "email": "rik@nostriphant.dev"
+        }
+    ],
+    "require-dev": {
+        "pestphp/pest": "^2.35",
+        "mockery/mockery": "^1.6"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "scripts": {
+        "clearCache": [
+            "rm -rf ./data/events/*",
+            "rm -rf ./data/files/*",
+            "rm -rf ./data/disktest_*"
+        ],
+        "test": [
+            "@clearCache @no_additional_args",
+            "./vendor/bin/pest"
+        ],
+        "next": [
+            "git tag -f `cat VERSION` @no_additional_args",
+            "echo @additional_args > VERSION",
+            "git commit -am 'start VERSION @additional_args'"
+        ]
+    }
+}
