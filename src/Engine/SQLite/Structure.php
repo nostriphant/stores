@@ -54,7 +54,7 @@ readonly class Structure {
                 . "    json_insert(json_group_array(tag_value.value), '$[#]', tag.name) AS json"
                 . " FROM tag "
                 . " LEFT JOIN tag_value ON tag.id = tag_value.tag_id "
-                . " GROUP BY tag.name"
+                . " GROUP BY tag.event_id, tag.name"
                 . " ORDER BY tag_value.position ASC"
         );
 
