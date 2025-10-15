@@ -5,7 +5,7 @@
     "require": {
         "php": "^8.3",
         "ext-pcntl": "*",
-        "nostriphant/nip-01": "^1.0"
+        "nostriphant/nip-01": "^2.0"
     },
     "license": "MIT",
     "autoload": {
