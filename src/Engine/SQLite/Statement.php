@@ -18,7 +18,14 @@ readonly class Statement {
             return new Results();
         }
         $arguments = $this->arguments;
-        array_walk($arguments, fn(mixed $argument, int $position) => $statement->bindValue($position + 1, $argument));
+        array_walk($arguments, fn(mixed $argument, int $position) => $statement->bindValue($position + 1, $argument, match(gettype($argument)) {
+            "boolean" => SQLITE3_INTEGER,
+            "integer" => SQLITE3_INTEGER,
+            "double"  => SQLITE3_FLOAT,
+            "string" => SQLITE3_TEXT,
+            "NULL" => SQLITE3_NULL,
+            default => throw new \Error('Invalid type for ' . $position + 1),
+        }));
         $result = $statement->execute();
         if ($result === false) {
             trigger_error('Query failed: ' . $statement->getSQL(true), E_USER_WARNING);
