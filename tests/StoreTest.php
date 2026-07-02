@@ -217,19 +217,19 @@ describe('The limit property of a filter', function () {
     $limit = 100;
 
     $events = [];
-    $key_sender = \Pest\key_sender();
+    $key_sender = Key::generate();
     $start = time() - $limit * 60;
     for ($i = 0; $i < $limit; $i++) {
         $values = [
             "id" => 0,
-            "pubkey" => $key_sender(nostriphant\NIP01\Key::public()),
+            "pubkey" => nostriphant\NIP01\Key::derivePublicKey($key_sender),
             "created_at" => $start + $i * 60,
             "kind" => 1,
             "tags" => [],
             "content" => 'Hello World ' . $i,
         ];
         $values['id'] = hash('sha256', Nostr::encode(array_values($values)));
-        $values['sig'] = $key_sender(Key::signer($values['id']));
+        $values['sig'] = Key::sign($key_sender, $values['id']);
         $events[] = new Event(...$values);
     }
 
